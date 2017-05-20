@@ -18,7 +18,12 @@ exports.get = function(req, res) {
   } else {
     if (path === '/' || path === '/home') {
       require('../app/controllers/home').get(req, res);
-    } else {
+    } else if (path === '/search') {
+      require('../app/guidebox/index').get(req,res);
+    } else if (path === '/results') {
+      var criteria = searchParams;
+      require('../app/guidebox/guidebox').get(req,res,criteria);
+    }else {
       require('../app/controllers/404').get(req, res);
     }
   }

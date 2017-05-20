@@ -1,17 +1,50 @@
 //app//guidebox/guidebox.js
 
 /*Start guidebox config section*/
+var resultsTemplate = require('../web/views/template-results');
 var client = require('guidebox')
-var Guidebox = new client('43f0aa6f1845fa3c37bee5c9dc58fd5d6b84731c')
+var GuideboxAPI = new client('43f0aa6f1845fa3c37bee5c9dc58fd5d6b84731c')
 /*End guidebox config section*/
-
-
-/*var options = {
-    limit: 2,
-    sources: 'free,netflix,hbo'
-}*/
 /*helper methods start */
+exports.get = function(req, res, criteria) {
+  var searchPage = "";
+  var searchParams = "";
+  var resultsString = "";
+  var resultsObj = "";
+  if (criteria.sources == "" || criteria == null) {
+    res.write(resultsTemplate.build("Results Page", "Results...", "<p>Oops! You seems to have landed here without specifying " +
+    "any search criteria. Please follow the below link to search again.</p>" + searchPage));
+  }else {
+  //console.log(criteria.sources)
+      if(criteria.searchType == 'genre'){
+        var results = exports.getShowsByGenre(criteria.sources, criteria.genre)
+        .then((response) => {
+            resultsObj = response.results
+            //console.log(resultsObj.length)
 
+            for(var i = 0; i<resultsObj.length; i++){
+            resultsString = resultsString + "<li>" + resultsObj[i].title + "</li>";
+            }
+            resultsString = "<ul>" + resultsString + "</ul>"
+            res.writeHead(200, {
+                   'Content-Type': 'text/html'
+             });
+            res.write(resultsTemplate.build("Results Page", "Results...", "<p>We found the following content based on your search criteria:</p>" + resultsString));
+            res.end();
+        }, (response) => {
+            console.error(response.data.error )
+            resultsString = response.data.error
+         });
+      } else {
+
+            res.writeHead(200, {
+                   'Content-Type': 'text/html'
+             });
+             res.write(resultsTemplate.build("Results Page", "Results...", "<p>We found the following content based on your search criteria:</p>" + resultsString));
+             res.end();
+      }
+     }
+};
 /*helper methods end */
 /*public methods start */
 
@@ -23,18 +56,19 @@ var Guidebox = new client('43f0aa6f1845fa3c37bee5c9dc58fd5d6b84731c')
      * @param:genre ->
      */
     exports.getShowsByGenre = function(sources, genre) {
-          var limit = 2;
+          var limit = 5;
           var options = {
            limit: limit,
            sources: sources,
            tags: genre
           }
-          var shows = Guidebox.shows.list(options)
+          /*var shows = GuideboxAPI.shows.list(options)
           .then((response) => {
            console.log(response.results)
           }, (response) => {
           console.error(response.data.error )
-          });
+          });*/
+          return GuideboxAPI.shows.list(options)
     };
   /*
    * type: show
@@ -53,7 +87,7 @@ var Guidebox = new client('43f0aa6f1845fa3c37bee5c9dc58fd5d6b84731c')
          field: type,
          query: searchQuery
         }
-        var shows = Guidebox.search.shows(options)
+        var shows = GuideboxAPI.search.shows(options)
         .then((response) => {
          console.log(response.results)
         }, (response) => {
@@ -68,7 +102,7 @@ var Guidebox = new client('43f0aa6f1845fa3c37bee5c9dc58fd5d6b84731c')
    * @param:searchQuery ->
    */
     exports.getRelatedShows = function(showId) {
-        var shows = Guidebox.shows.related(showId)
+        var shows = GuideboxAPI.shows.related(showId)
         .then((response) => {
          console.log(response.results)
         }, (response) => {
@@ -89,7 +123,7 @@ var Guidebox = new client('43f0aa6f1845fa3c37bee5c9dc58fd5d6b84731c')
          sources: sources,
          query: searchQuery
         }
-        var shows = Guidebox.search.person(options)
+        var shows = GuideboxAPI.search.person(options)
         .then((response) => {
          console.log(response.results)
         }, (response) => {
@@ -110,7 +144,7 @@ var Guidebox = new client('43f0aa6f1845fa3c37bee5c9dc58fd5d6b84731c')
            sources: sources,
            tags: genre
           }
-          var shows = Guidebox.movies.list(options)
+          var shows = GuideboxAPI.movies.list(options)
           .then((response) => {
            console.log(response.results)
           }, (response) => {
@@ -134,7 +168,7 @@ var Guidebox = new client('43f0aa6f1845fa3c37bee5c9dc58fd5d6b84731c')
              field: type,
              query: searchQuery
             }
-            var shows = Guidebox.search.movies(options)
+            var shows = GuideboxAPI.search.movies(options)
             .then((response) => {
              console.log(response.results)
             }, (response) => {

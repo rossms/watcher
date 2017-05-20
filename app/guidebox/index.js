@@ -1,5 +1,7 @@
 // app/index.js
 
+//requires
+var searchTemplate = require('../web/views/template-search');
 const guidebox = require('./guidebox')
 
 
@@ -20,4 +22,21 @@ const guidebox = require('./guidebox')
 
 //guidebox.getMoviesByType('free,netflix,hbo', 'title', 'Shawshank Redemption')
 
-guidebox.getRelatedShows(6959)
+//guidebox.getRelatedShows(6959)
+
+exports.get = function(req, res) {
+
+  var searchCriteria = "";
+  res.writeHead(200, {
+    'Content-Type': 'text/html'
+  });
+  res.write(searchTemplate.build("Search Page", "Search...", "<p>Enter your search criteria from the sections below:</p>" + searchCriteria));
+  res.end();
+};
+
+var test  = "test string!";
+
+var searchObj = {sources:'netflix', genre:'comedy', searchQuery: '', searchType: 'genre'}
+
+global.searchParams = searchObj;
+
