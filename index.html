@@ -9,6 +9,11 @@
   <style type="text/css">
     .FilmsTable {margin: 0.0px 0.0px 0.0px 0.0px; line-height: 14.0px; font: 12.0px Times; color: #000000; -webkit-text-stroke: #000000}
     span.s1 {font-kerning: none}
+    input[type=text] {
+        width: 150px;
+        -webkit-transition: width 0.4s ease-in-out;
+        transition: width 0.4s ease-in-out;
+    }
   </style>
 </head>
 <body>
@@ -18,9 +23,11 @@
     
     <noscript>Sorry, your browser does not support JavaScript!</noscript>
     <h1>What Can I Watch Tonight?</h1>
-    <p class="p1"><span class="s1">Please view the selection of movies below based on your preferences.<span class="Apple-converted-space"> </span></span></p>
-
+    <p class="p1"><span class="s1">Please Search for a movie in the box below.<span class="Apple-converted-space"> </span></span></p>
+    <input type="text" name="searchbar" placeholder="Enter search here..." />
+    <input type="button" name="searchbutton" value="Search" />
     <div class="FilmsTable">
+        <br />
         The table with the movie selections will go here.
     </div>
 
