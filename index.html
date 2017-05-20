@@ -6,7 +6,11 @@
   <title>What Can I Watch Tonight?</title>
   <meta name="Generator" content="Cocoa HTML Writer">
   <meta name="CocoaVersion" content="1504.82">
+  <script src="app/guidebox/index.js"></script>
+  <script src="dynamic_background.js"></script>
+  <noscript>Sorry, your browser does not support JavaScript!</noscript>
   <style type="text/css">
+      .SearchSection {background-color: #FFFFFF; display: inline-block; padding: 5px}
     .FilmsTable {margin: 0.0px 0.0px 0.0px 0.0px; line-height: 14.0px; font: 12.0px Times; color: #000000; -webkit-text-stroke: #000000}
     span.s1 {font-kerning: none}
     input[type=text] {
@@ -16,24 +20,22 @@
     }
   </style>
 </head>
-<body>
+<body onload="setDynamicBackground()">
 <center>
-    <script src="index.js">
-    </script>
-    
-    <noscript>Sorry, your browser does not support JavaScript!</noscript>
     <h1>What Can I Watch Tonight?</h1>
-    <p class="p1"><span class="s1">Please Search for a movie in the box below.<span class="Apple-converted-space"> </span></span></p>
-    <input type="text" name="searchbar" placeholder="Enter search here..." />
-    <select placeholder="Search for...">
-        <option value="title">Title</option>
-        <option value="genre">Genre</option>
-        <option value="actor">Actor</option>
-        <option value="director">Director</option>
-    </select>
-    <input type="button" name="searchbutton" value="Search" />
-    <div class="FilmsTable">
-        <br />
+    <div class="SearchSection">
+        <p class="p1"><span class="s1">Please Search for a movie, genre, actor, or director in the box below.<span class="Apple-converted-space"> </span></span></p>
+        <input type="text" name="searchbar" placeholder="Enter search here..." />
+        <select placeholder="Search for...">
+            <option value="title">Title</option>
+            <option value="genre">Genre</option>
+            <option value="actor">Actor</option>
+            <option value="director">Director</option>
+        </select>
+        <input type="button" name="searchbutton" value="Search" />
+    </div>
+    <div class="MainContent">
+        <br /><br />
         <img src="TVimage.png" alt="Picture of a Television" />
     </div>
 
