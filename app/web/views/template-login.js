@@ -5,8 +5,12 @@ exports.build = function(title, pagetitle, content) {
   '<script>var logIn = function(){'+
                'var userName = document.getElementById("userName").value;'+
                'var password = document.getElementById("password").value;'+
-               'console.log("** " + userName);'+
-               'window.location = "/user"'+
+               'var userNamePath = "/user="+userName;'+
+               'getUser(userNamePath);'+
+          '};'+
+          'var getUser = function(userNamePath){'+
+          'console.log("** " + window.loggedInUser);'+
+          'window.location = userNamePath;'+
           '}</script>\n',
   '<h1>{pagetitle}</h1>',
   '<div id="content">{content}</div>\n',

@@ -22,8 +22,9 @@ exports.get = function(req, res) {
     } else if (path === '/results') {
       var criteria = searchParams;
       require('../app/guidebox/guidebox').get(req,res,criteria);
-    }else if (path === '/user') {
-     require('../app/user/user').get(req,res);
+    }else if (path.includes('/user')) {
+      var userName = path.split("=")[1];
+     require('../app/user/user').get(req,res,userName);
     } else {
       require('../app/controllers/404').get(req, res);
     }

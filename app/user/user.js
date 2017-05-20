@@ -4,10 +4,18 @@ var template = require('../web/views/template-user');
 var test_data = require('../models/user-data');
 var globalUserSearchPrefs = "";
 
-exports.get = function(req, res) {
+exports.get = function(req, res, userName) {
   var userList = test_data.userList;
-  var userName = userList.userName;
-  var searchPrefs = userList.searchPrefs.sources;
+  //var userName = userList.userName;
+
+  var searchPrefs = "";
+  var users = userList.profiles;
+  for(i in users){
+     if(userName === users[i].username){
+       searchPrefs =  users[i].userPrefs.sources;
+     }
+  }
+  //var searchPrefs = userList.searchPrefs.sources;
   globalUserSearchPrefs = searchPrefs;
 
   var userSearchPrefsSet = globalUserSearchPrefs;
