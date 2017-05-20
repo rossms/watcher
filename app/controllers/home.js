@@ -1,4 +1,4 @@
-var template = require('../web/views/template-main');
+var template = require('../web/views/template-login');
 var test_data = require('../models/test-data');
 exports.get = function(req, res) {
 /*  var teamlist = test_data.teamlist;
@@ -13,6 +13,7 @@ exports.get = function(req, res) {
   res.writeHead(200, {
     'Content-Type': 'text/html'
   });
-  res.write(template.build("WCIWT?", "What Can I Watch Tonight?", "<p>Get started with one the of links below:</p>" + mainNavLinks));
+  res.write(template.build("WCIWT?", "What Can I Watch Tonight?", "<p>Please Log In:</p>" + mainNavLinks));
   res.end();
 };
+

@@ -4,8 +4,6 @@ var fs = require('fs');
 exports.get = function(req, res) {
   req.requrl = url.parse(req.url, true);
   var path = req.requrl.pathname;
-  //console.log("** " + path)
-  //console.log("* " + /.(css)$/.test(path))
   if (/.(css)$/.test(path)) {
     res.writeHead(200, {
       'Content-Type': 'text/css'
@@ -19,11 +17,14 @@ exports.get = function(req, res) {
     if (path === '/' || path === '/home') {
       require('../app/controllers/home').get(req, res);
     } else if (path === '/search') {
-      require('../app/guidebox/index').get(req,res);
+      var userSearchPrefSources = userSearchPrefs;
+      require('../app/guidebox/index').get(req,res,userSearchPrefSources);
     } else if (path === '/results') {
       var criteria = searchParams;
       require('../app/guidebox/guidebox').get(req,res,criteria);
-    }else {
+    }else if (path === '/user') {
+     require('../app/user/user').get(req,res);
+    } else {
       require('../app/controllers/404').get(req, res);
     }
   }

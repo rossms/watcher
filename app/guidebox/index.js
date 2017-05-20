@@ -24,7 +24,10 @@ const guidebox = require('./guidebox')
 
 //guidebox.getRelatedShows(6959)
 
-exports.get = function(req, res) {
+var sources = "";
+exports.get = function(req, res, userSearchPrefs) {
+
+  sources = userSearchPrefs;
 
   var searchCriteria = "";
   res.writeHead(200, {
@@ -32,11 +35,12 @@ exports.get = function(req, res) {
   });
   res.write(searchTemplate.build("Search Page", "Search...", "<p>Enter your search criteria from the sections below:</p>" + searchCriteria));
   res.end();
+
+  var searchObj = {sources: sources, genre:'comedy', searchQuery: '', searchType: 'genre'}
+
+  global.searchParams = searchObj;
 };
 
-var test  = "test string!";
 
-var searchObj = {sources:'netflix', genre:'comedy', searchQuery: '', searchType: 'genre'}
 
-global.searchParams = searchObj;
 

@@ -68,7 +68,7 @@ exports.get = function(req, res, criteria) {
           }, (response) => {
           console.error(response.data.error )
           });*/
-          return GuideboxAPI.shows.list(options)
+          return GuideboxAPI.shows.list(options);
     };
   /*
    * type: show
@@ -87,12 +87,13 @@ exports.get = function(req, res, criteria) {
          field: type,
          query: searchQuery
         }
-        var shows = GuideboxAPI.search.shows(options)
+        /*var shows = GuideboxAPI.search.shows(options)
         .then((response) => {
          console.log(response.results)
         }, (response) => {
         console.error(response.data.error )
-        });
+        });*/
+        return GuideboxAPI.search.shows(options);
     };
   /*
    * type: show
@@ -102,12 +103,13 @@ exports.get = function(req, res, criteria) {
    * @param:searchQuery ->
    */
     exports.getRelatedShows = function(showId) {
-        var shows = GuideboxAPI.shows.related(showId)
+        /*var shows = GuideboxAPI.shows.related(showId)
         .then((response) => {
          console.log(response.results)
         }, (response) => {
         console.error(response.data.error )
-        });
+        });*/
+        return GuideboxAPI.shows.related(showId);
     };
 
   /*
@@ -123,12 +125,13 @@ exports.get = function(req, res, criteria) {
          sources: sources,
          query: searchQuery
         }
-        var shows = GuideboxAPI.search.person(options)
+        /*var shows = GuideboxAPI.search.person(options)
         .then((response) => {
          console.log(response.results)
         }, (response) => {
         console.error(response.data.error )
-        });
+        });*/
+        return GuideboxAPI.search.person(options);
     };
 
     /*
@@ -144,12 +147,13 @@ exports.get = function(req, res, criteria) {
            sources: sources,
            tags: genre
           }
-          var shows = GuideboxAPI.movies.list(options)
+          /*var shows = GuideboxAPI.movies.list(options)
           .then((response) => {
            console.log(response.results)
           }, (response) => {
           console.error(response.data.error )
-          });
+          });*/
+          return GuideboxAPI.movies.list(options);
     };
       /*
        * type: movie
@@ -168,12 +172,13 @@ exports.get = function(req, res, criteria) {
              field: type,
              query: searchQuery
             }
-            var shows = GuideboxAPI.search.movies(options)
+            /*var shows = GuideboxAPI.search.movies(options)
             .then((response) => {
              console.log(response.results)
             }, (response) => {
             console.error(response.data.error )
-            });
+            });*/
+            return GuideboxAPI.search.movies(options);
         };
 
 
