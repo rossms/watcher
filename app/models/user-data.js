@@ -1,9 +1,19 @@
 var thelist = function() {
   var objJson = {
-    "userName": "Ross",
-    "searchPrefs": {
-      "sources": "free,netflix,hbo"
-    }
+         "profiles": [
+            {"username": "Ross", "userPrefs": {
+                    "sources": "free,netflix,hbo"
+                }
+            },
+            {"username": "Nai", "userPrefs": {
+                                "sources": "free,hulu"
+                }
+            },
+            {"username": "Scott", "userPrefs": {
+                                "sources": "free,amazon_prime"
+                }
+            }
+         ]
   };
   return objJson;
 };
