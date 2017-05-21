@@ -7,10 +7,14 @@ exports.build = function(title, pagetitle, content) {
                 'window.location = "/search";'+
   '}</script>' +
   '<body onload="setDynamicBackground()">',
+  '<center>',
+  '<div class="SearchSection">',
   '<h1>{pagetitle}</h1>',
   '<div id="content">{content}</div>\n',
   '</br>',
   '<button onclick="search()">Search:</button>',
+  '</div>',
+  '</center>',
   '</body>']
   .join('\n')
   .replace(/{title}/g, title)
