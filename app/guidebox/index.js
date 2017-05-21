@@ -33,12 +33,12 @@ exports.get = function(req, res, userSearchPrefs) {
   res.writeHead(200, {
     'Content-Type': 'text/html'
   });
-  res.write(searchTemplate.build("Search Page", "Search...", "<p>Enter your search criteria from the sections below:</p>" + searchCriteria));
+  res.write(searchTemplate.build("Search Page", "Search...", sources));
   res.end();
-
+/*
   var searchObj = {sources: sources, genre:'comedy', searchQuery: '', searchType: 'genre'}
 
-  global.searchParams = searchObj;
+  global.searchParams = searchObj;*/
 };
 
 

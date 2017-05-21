@@ -11,13 +11,21 @@ exports.get = function(req, res, criteria) {
   var searchParams = "";
   var resultsString = "";
   var resultsObj = "";
-  if (criteria.sources == "" || criteria == null) {
+  //sources='free,netflix,hbo'&searchQuery=Comedy&searchType=Genre&movieOrShow=show
+  var searchStringArray = criteria.split("&");
+  var searchObj = {
+            sources: searchStringArray[0].split("=")[1],
+            movieOrShow: searchStringArray[3].split("=")[1],
+            searchQuery: searchStringArray[1].split("=")[1],
+            searchType: searchStringArray[2].split("=")[1]
+            }
+  if (searchObj.sources == "" || searchObj == null) {
     res.write(resultsTemplate.build("Results Page", "Results...", "<p>Oops! You seems to have landed here without specifying " +
     "any search criteria. Please follow the below link to search again.</p>" + searchPage));
   }else {
   //console.log(criteria.sources)
-      if(criteria.searchType == 'genre'){
-        var results = exports.getShowsByGenre(criteria.sources, criteria.genre)
+      if(searchObj.searchType == 'Genre'){
+        var results = exports.getShowsByGenre(searchObj.sources, searchObj.searchQuery)
         .then((response) => {
             resultsObj = response.results
             //console.log(resultsObj.length)

@@ -1,11 +1,55 @@
-exports.build = function(title, pagetitle, content) {
-  return ['<!doctype html>',
-  '<html lang="en">\n<meta charset="utf-8">\n<title>{title}</title>',
-  '<link rel="stylesheet" href="/assets/style.css" />\n',
-  '<h1>{pagetitle}</h1>',
-  '<div id="content">{content}</div>\n']
+exports.build = function(title, pagetitle, sources) {
+  return [
+'<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">',
+'<html>',
+'<head>',
+'  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">',
+'  <meta http-equiv="Content-Style-Type" content="text/css">',
+'  <title>What Can I Watch Tonight?</title>',
+'  <meta name="Generator" content="Cocoa HTML Writer">',
+'  <meta name="CocoaVersion" content="1504.82">',
+'  <script src="search-helper.js"></script>',
+'  <noscript>Sorry, your browser does not support JavaScript!</noscript>',
+'  <style type="text/css">',
+'      .SearchSection {background-color: #FFFFFF; display: inline-block; padding: 10px}',
+'    .FilmsTable {margin: 0.0px 0.0px 0.0px 0.0px; line-height: 14.0px; font: 12.0px Times; color: #000000; -webkit-text-stroke: #000000}',
+'    span.s1 {font-kerning: none}',
+'    input[type=text] {',
+'        width: 150px;',
+'        -webkit-transition: width 0.4s ease-in-out;',
+'        transition: width 0.4s ease-in-out;',
+'    }',
+'  </style>',
+'<input type="hidden" id="sources" value="{sources}">',
+'</head>',
+'<body onload="setDynamicBackground()">',
+'<center>',
+'    <div class="SearchSection">',
+'        <h1>What Can I Watch Tonight?</h1>',
+'        <p class="p1"><span class="s1">Please Search for a movie, genre, actor, or director in the box below.<span class="Apple-converted-space"> </span></span></p>',
+'        <input type="text" name="searchbar" id="searchbar" placeholder="Enter search here..." />',
+'        <select id="searchType" placeholder="Search for...">',
+'            <option value="title">Title</option>',
+'            <option value="genre">Genre</option>',
+'            <option value="actor">Actor</option>',
+'            <option value="director">Director</option>',
+'        </select>',
+'        <select id="movieOrShow" placeholder="Type">',
+'            <option value="show">TV Show</option>',
+'            <option value="movie">Movie</option>',
+'        </select>',
+'        <input type="button" name="searchbutton" value="Search" onclick="search()"/>',
+'    </div>',
+'    <div class="MainContent">',
+'        <br /><br />',
+'        <img src="TVimage.png" alt="Picture of a Television" />',
+'    </div>',
+'</center>',
+'</body>',
+'</html>',
+]
   .join('\n')
   .replace(/{title}/g, title)
   .replace(/{pagetitle}/g, pagetitle)
-  .replace(/{content}/g, content);
+  .replace(/{sources}/g, sources);
 };
