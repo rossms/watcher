@@ -32,7 +32,7 @@ exports.get = function(req, res, criteria) {
             //console.log(resultsObj.length)
 
             for(var i = 0; i<resultsObj.length; i++){
-            resultsString = resultsString + "<li>" + resultsObj[i].title + "</li>";
+            resultsString = resultsString + "<li>" + resultsObj[i].title + "</li><a href='http://www.imdb.com/title/"+resultsObj[i].imdb_id+"' target='blank'>IMDB Link</a></br><img src='"+resultsObj[i].artwork_208x117+"'>";
             }
             resultsString = "<ul>" + resultsString + "</ul>"
             res.writeHead(200, {
@@ -49,7 +49,7 @@ exports.get = function(req, res, criteria) {
         .then((response) => {
             resultsObj = response.results
             for(var i = 0; i<resultsObj.length; i++){
-            resultsString = resultsString + "<li>" + resultsObj[i].title + "</li>";
+            resultsString = resultsString + "<li>" + resultsObj[i].title + "</li><a href='http://www.imdb.com/title/"+resultsObj[i].imdb_id+"' target='blank'>IMDB Link</a></br><img src='"+resultsObj[i].artwork_208x117+"'>";
             }
             resultsString = "<ul>" + resultsString + "</ul>"
             res.writeHead(200, {
@@ -66,7 +66,7 @@ exports.get = function(req, res, criteria) {
         .then((response) => {
             resultsObj = response.results
             for(var i = 0; i<resultsObj.length; i++){
-            resultsString = resultsString + "<li>" + resultsObj[i].name + "</li>";
+            resultsString = resultsString + "<li>" + resultsObj[i].name + "</li><a href='http://www.imdb.com/name/"+resultsObj[i].imdb_id+"' target='blank'>IMDB Link</a></br><img src='"+resultsObj[i].images.small.url+"'>";
             }
             resultsString = "<ul>" + resultsString + "</ul>"
             res.writeHead(200, {
@@ -83,7 +83,7 @@ exports.get = function(req, res, criteria) {
           .then((response) => {
               resultsObj = response.results
               for(var i = 0; i<resultsObj.length; i++){
-              resultsString = resultsString + "<li>" + resultsObj[i].title + "</li>";
+              resultsString = resultsString + "<li>" + resultsObj[i].title + "</li><a href='http://www.imdb.com/title/"+resultsObj[i].imdb_id+"' target='blank'>IMDB Link</a></br><img src='"+resultsObj[i].artwork_208x117+"'>";
               }
               resultsString = "<ul>" + resultsString + "</ul>"
               res.writeHead(200, {
@@ -105,7 +105,7 @@ exports.get = function(req, res, criteria) {
                                  .then((response) => {
                                      resultsObj = response.results
                                      for(var i = 0; i<resultsObj.length; i++){
-                                     resultsString = resultsString + "<li>" + resultsObj[i].title + "</li>";
+                                     resultsString = resultsString + "<li>" + resultsObj[i].title + "</li><a href='http://www.imdb.com/title/"+resultsObj[i].imdb_id+"' target='blank'>IMDB Link</a></br><img src='"+resultsObj[i].artwork_208x117+"'>";
                                      }
                                      resultsString = "<ul>" + resultsString + "</ul>"
                                      res.writeHead(200, {
