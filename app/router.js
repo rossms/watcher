@@ -29,7 +29,7 @@ exports.get = function(req, res) {
       var userSearchPrefSources = userSearchPrefs;
       require('../app/guidebox/index').get(req,res,userSearchPrefSources);
     } else if (path.includes('/results')) {
-       var criteria = path.split("%")[1];
+       var criteria = path.split("~")[1];
        console.log("** " + path);
       //var criteria = searchParams;
       require('../app/guidebox/guidebox').get(req,res,criteria);

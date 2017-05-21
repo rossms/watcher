@@ -33,6 +33,7 @@ exports.build = function(title, pagetitle, sources) {
 '            <option value="genre">Genre</option>',
 '            <option value="actor">Actor</option>',
 '            <option value="director">Director</option>',
+'            <option value="related">Related Content</option>',
 '        </select>',
 '        <select id="movieOrShow" placeholder="Type">',
 '            <option value="show">TV Show</option>',

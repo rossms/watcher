@@ -51,13 +51,17 @@ function setDynamicBackground(){
 var search = function() {
     var searchQuery = document.getElementById("searchbar").value;
     var select = document.getElementById("searchType");
-    var searchType = select.options[select.selectedIndex].text;
+    var searchType = select.options[select.selectedIndex].value;
     var movieShowSelect = document.getElementById("movieOrShow");
     var movieOrShow = movieShowSelect.options[movieShowSelect.selectedIndex].value;
     var sources = document.getElementById("sources").value;
-    var searchString = "sources="+sources+"&searchQuery="+searchQuery+"&searchType="+searchType+"&movieOrShow="+movieOrShow;
+    var searchString = "sources="+sources+"&searchQuery=\'"+searchQuery+"\'&searchType="+searchType+"&movieOrShow="+movieOrShow;
 
-    var path = "/results%"+searchString;
+    var path = "/results~"+searchString;
     console.log("*** " + path)
     window.location= path;
+}
+
+var searchPage = function() {
+    window.location = "/search";
 }

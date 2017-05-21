@@ -13,19 +13,20 @@ exports.get = function(req, res, criteria) {
   var resultsObj = "";
   //sources='free,netflix,hbo'&searchQuery=Comedy&searchType=Genre&movieOrShow=show
   var searchStringArray = criteria.split("&");
+  console.log(decodeURI(searchStringArray[1].split("=")[1]));
   var searchObj = {
             sources: searchStringArray[0].split("=")[1],
             movieOrShow: searchStringArray[3].split("=")[1],
-            searchQuery: searchStringArray[1].split("=")[1],
-            searchType: searchStringArray[2].split("=")[1]
+            searchQuery: decodeURI(searchStringArray[1].split("=")[1]),
+            searchType: searchStringArray[2].split("=")[1].toLowerCase()
             }
   if (searchObj.sources == "" || searchObj == null) {
     res.write(resultsTemplate.build("Results Page", "Results...", "<p>Oops! You seems to have landed here without specifying " +
     "any search criteria. Please follow the below link to search again.</p>" + searchPage));
   }else {
   //console.log(criteria.sources)
-      if(searchObj.searchType == 'Genre'){
-        var results = exports.getShowsByGenre(searchObj.sources, searchObj.searchQuery)
+      if(searchObj.searchType == 'genre' && searchObj.movieOrShow == 'show'){
+        var results = exports.getShowsByGenre(searchObj.sources, replaceAll(searchObj.searchQuery.toLowerCase(),"\'", ""))
         .then((response) => {
             resultsObj = response.results
             //console.log(resultsObj.length)
@@ -43,16 +44,97 @@ exports.get = function(req, res, criteria) {
             console.error(response.data.error )
             resultsString = response.data.error
          });
-      } else {
-
+      } else if (searchObj.searchType == 'title' && searchObj.movieOrShow == 'show') {
+        var results = exports.getShowsByType(searchObj.sources, searchObj.searchType, searchObj.searchQuery.toLowerCase())
+        .then((response) => {
+            resultsObj = response.results
+            for(var i = 0; i<resultsObj.length; i++){
+            resultsString = resultsString + "<li>" + resultsObj[i].title + "</li>";
+            }
+            resultsString = "<ul>" + resultsString + "</ul>"
             res.writeHead(200, {
                    'Content-Type': 'text/html'
              });
-             res.write(resultsTemplate.build("Results Page", "Results...", "<p>We found the following content based on your search criteria:</p>" + resultsString));
-             res.end();
+            res.write(resultsTemplate.build("Results Page", "Results...", "<p>We found the following content based on your search criteria:</p>" + resultsString));
+            res.end();
+        }, (response) => {
+            console.error(response.data.error )
+            resultsString = response.data.error
+         });
+      } else if (searchObj.searchType == 'actor' || searchObj.searchType == 'director') {
+        var results = exports.getPersonDetails(searchObj.sources, searchObj.searchQuery.toLowerCase())
+        .then((response) => {
+            resultsObj = response.results
+            for(var i = 0; i<resultsObj.length; i++){
+            resultsString = resultsString + "<li>" + resultsObj[i].name + "</li>";
+            }
+            resultsString = "<ul>" + resultsString + "</ul>"
+            res.writeHead(200, {
+                   'Content-Type': 'text/html'
+             });
+            res.write(resultsTemplate.build("Results Page", "Results...", "<p>We found the following content based on your search criteria:</p>" + resultsString));
+            res.end();
+        }, (response) => {
+            console.error(response.data.error )
+            resultsString = response.data.error
+         });
+      } else if (searchObj.searchType == 'title' && searchObj.movieOrShow == 'movie') {
+          var results = exports.getMoviesByType(searchObj.sources, searchObj.searchType, searchObj.searchQuery.toLowerCase())
+          .then((response) => {
+              resultsObj = response.results
+              for(var i = 0; i<resultsObj.length; i++){
+              resultsString = resultsString + "<li>" + resultsObj[i].title + "</li>";
+              }
+              resultsString = "<ul>" + resultsString + "</ul>"
+              res.writeHead(200, {
+                     'Content-Type': 'text/html'
+               });
+              res.write(resultsTemplate.build("Results Page", "Results...", "<p>We found the following content based on your search criteria:</p>" + resultsString));
+              res.end();
+          }, (response) => {
+              console.error(response.data.error )
+              resultsString = response.data.error
+           });
+      } else if (searchObj.searchType == 'related') {
+           var getShowID = exports.getShowsByType(searchObj.sources, 'title', searchObj.searchQuery.toLowerCase())
+                       .then((response) => {
+                       resultsObj = response.results
+                       var showId = resultsObj[0].id;
+
+                                 var results = exports.getRelatedShows(showId)
+                                 .then((response) => {
+                                     resultsObj = response.results
+                                     for(var i = 0; i<resultsObj.length; i++){
+                                     resultsString = resultsString + "<li>" + resultsObj[i].title + "</li>";
+                                     }
+                                     resultsString = "<ul>" + resultsString + "</ul>"
+                                     res.writeHead(200, {
+                                            'Content-Type': 'text/html'
+                                      });
+                                     res.write(resultsTemplate.build("Results Page", "Results...", "<p>We found the following content based on your search criteria:</p>" + resultsString));
+                                     res.end();
+                                 }, (response) => {
+                                     console.error(response.data.error )
+                                     resultsString = response.data.error
+                                  });
+
+                   }, (response) => {
+                       console.error(response.data.error )
+                       resultsString = response.data.error
+                    });
+      } else {
+        res.writeHead(200, {
+               'Content-Type': 'text/html'
+         });
+         res.write(resultsTemplate.build("Results Page", "Results...", "<p>We're sorry! We can't search on that right now. We're working on it.</p>" + resultsString));
+         res.end();
       }
      }
 };
+
+function replaceAll(str, find, replace) {
+  return str.replace(new RegExp(find, 'g'), replace);
+}
 /*helper methods end */
 /*public methods start */
 
