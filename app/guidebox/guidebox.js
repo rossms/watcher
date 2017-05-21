@@ -66,7 +66,11 @@ exports.get = function(req, res, criteria) {
         .then((response) => {
             resultsObj = response.results
             for(var i = 0; i<resultsObj.length; i++){
-            resultsString = resultsString + "<li>" + resultsObj[i].name + "</li><a href='http://www.imdb.com/name/"+resultsObj[i].imdb_id+"' target='blank'>IMDB Link</a></br><img src='"+resultsObj[i].images.small.url+"'>";
+            var imdbLink = "";
+            if (resultsObj[i].imdb != null || resultsObj[i].imdb != ""){
+               imdbLink = resultsObj[i].imdb;
+            }
+            resultsString = resultsString + "<li>" + resultsObj[i].name + "</li><a href='http://www.imdb.com/name/"+imdbLink+"' target='blank'>IMDB Link</a></br><img src='"+resultsObj[i].images.small.url+"'>";
             }
             resultsString = "<ol>" + resultsString + "</ol>"
             res.writeHead(200, {
@@ -95,7 +99,7 @@ exports.get = function(req, res, criteria) {
               console.error(response.data.error )
               resultsString = response.data.error
            });
-      } else if (searchObj.searchType == 'related') {
+      } else if (searchObj.searchType == 'related' && searchObj.movieOrShow == 'show') {
            var getShowID = exports.getShowsByType(searchObj.sources, 'title', searchObj.searchQuery.toLowerCase())
                        .then((response) => {
                        resultsObj = response.results
@@ -122,6 +126,32 @@ exports.get = function(req, res, criteria) {
                        console.error(response.data.error )
                        resultsString = response.data.error
                     });
+      } else if (searchObj.searchType == 'related' && searchObj.movieOrShow == 'movie') {
+                var getMovieId = exports.getMoviesByType(searchObj.sources, 'title', searchObj.searchQuery.toLowerCase())
+                     .then((response) => {
+                     resultsObj = response.results
+                     var movieId = resultsObj[0].id;
+                               var results = exports.getRelatedMovies(movieId)
+                               .then((response) => {
+                                   resultsObj = response.results
+                                   for(var i = 0; i<resultsObj.length; i++){
+                                   resultsString = resultsString + "<li>" + resultsObj[i].title + "</li><a href='http://www.imdb.com/title/"+resultsObj[i].imdb_id+"' target='blank'>IMDB Link</a></br><img src='"+resultsObj[i].artwork_208x117+"'>";
+                                   }
+                                   resultsString = "<ol>" + resultsString + "</ol>"
+                                   res.writeHead(200, {
+                                          'Content-Type': 'text/html'
+                                    });
+                                   res.write(resultsTemplate.build("Results Page", "Results...", "<p>We found the following content based on your search criteria:</p>" + resultsString));
+                                   res.end();
+                               }, (response) => {
+                                   console.error(response.data.error )
+                                   resultsString = response.data.error
+                                });
+
+                    }, (response) => {
+                     console.error(response.data.error )
+                     resultsString = response.data.error
+                });
       } else {
         res.writeHead(200, {
                'Content-Type': 'text/html'
@@ -256,9 +286,7 @@ function replaceAll(str, find, replace) {
             var limit = 0;
             if(type === 'title'){limit = 1} else {limit = 2}
             var options = {
-             limit: limit,
-             sources: sources,
-             type: type,
+             type: 'movie',
              field: type,
              query: searchQuery
             }
@@ -270,6 +298,21 @@ function replaceAll(str, find, replace) {
             });*/
             return GuideboxAPI.search.movies(options);
         };
-
+      /*
+       * type: movie
+       * this function searches for related movie based on the given show
+       * @param:sources -> string of subscription based content providers
+       * @param:type ->
+       * @param:searchQuery ->
+       */
+        exports.getRelatedMovies = function(movieId) {
+            /*var shows = GuideboxAPI.shows.related(showId)
+            .then((response) => {
+             console.log(response.results)
+            }, (response) => {
+            console.error(response.data.error )
+            });*/
+            return GuideboxAPI.movies.related(movieId);
+        };
 
 /*public methods end */
